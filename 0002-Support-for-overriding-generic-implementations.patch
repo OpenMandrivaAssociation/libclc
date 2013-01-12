@@ -1,0 +1,47 @@
+From 2e363c062410d2f55d5b02df72c9f31c6d812c0e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bernhard=20Rosenkr=E4nzer?= <bero@lindev.ch>
+Date: Sat, 12 Jan 2013 03:54:14 +0100
+Subject: [PATCH 2/3] Support for overriding generic implementations.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Based on:
+http://www.pcc.me.uk/pipermail/libclc-dev/2012-December/000057.html
+
+Targets can override generic implementations by adding a file called
+OVERRIDES in $(TARGET_DIR)/lib and listing the generic implementations
+that it wants to override.  For example, to override get_group_id() and
+get_global_size() you would add these lines to the OVERRIDES file:
+
+workitem/get_group_id.cl
+workitem/get_global_size.cl
+
+From: Tom Stellard <thomas.stellard@amd.com>
+Signed-off-by: Bernhard Rosenkränzer <bero@lindev.ch>
+---
+ configure.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/configure.py b/configure.py
+index 8d1c2c5..b8a2bfe 100755
+--- a/configure.py
++++ b/configure.py
+@@ -137,6 +137,14 @@ for target in targets:
+   for libdir in libdirs:
+     subdir_list_file = os.path.join(libdir, 'SOURCES')
+     manifest_deps.add(subdir_list_file)
++    override_list_file = os.path.join(libdir, 'OVERRIDES')
++
++    # Add target overrides
++    if os.path.exists(override_list_file):
++        for override in open(override_list_file).readlines():
++            override = override.rstrip()
++            sources_seen.add(override)
++
+     for src in open(subdir_list_file).readlines():
+       src = src.rstrip()
+       if src not in sources_seen:
+-- 
+1.7.11.3
+
