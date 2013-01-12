@@ -16,6 +16,7 @@ Patch0: 0001-Better-FHS-compliance.patch
 Patch1: 0002-Support-for-overriding-generic-implementations.patch
 Patch2: 0003-Add-r600-support.patch
 BuildRequires: llvm >= 3.2-2 clang >= 3.2-2 python
+BuildRequires: llvm-devel >= 3.2-2
 BuildArch: noarch
 
 %description
