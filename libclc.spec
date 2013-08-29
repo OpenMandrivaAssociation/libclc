@@ -1,4 +1,4 @@
-%define git 20130112
+%define git 20130829
 
 Summary:	Implementation of the library of the OpenCL C programming language
 Name:		libclc
@@ -13,14 +13,11 @@ Source0:	%{name}-%{version}.tar.xz
 Group:		Development/Other
 License:	MIT
 Url:		http://libclc.llvm.org/
-Patch0:		0001-Better-FHS-compliance.patch
-Patch1:		0002-Support-for-overriding-generic-implementations.patch
-Patch2:		0003-Add-r600-support.patch
 BuildArch:	noarch
-BuildRequires:	clang >= 3.2-2
-BuildRequires:	llvm >= 3.2-2
+BuildRequires:	clang >= 3.3
+BuildRequires:	llvm >= 3.3
 BuildRequires:	python
-BuildRequires:	llvm-devel >= 3.2-2
+BuildRequires:	llvm-devel >= 3.3
 
 %description
 libclc is an open source, BSD/MIT dual licensed implementation of the library
@@ -46,11 +43,12 @@ to override the generic implementation at the granularity of individual
 functions.
 
 %prep
-%setup -qn %{name}
+%setup -qn %{name}-%{git}
 %apply_patches
 python configure.py \
 	--prefix=%{_prefix} \
 	--pkgconfigdir=%{_datadir}/pkgconfig
+sed -i -e "s,/generic,`pwd`/generic,g" Makefile
 
 %build
 %make
