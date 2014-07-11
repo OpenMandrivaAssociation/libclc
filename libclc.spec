@@ -7,7 +7,7 @@ Version:	0.0.1
 Release:	0.%{git}.1
 Source0:	%{name}-%{git}.tar.xz
 %else
-Release:	6
+Release:	7
 Source0:	%{name}-%{version}.tar.xz
 %endif
 Group:		Development/Other
