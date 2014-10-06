@@ -1,4 +1,8 @@
-%define git 20130829
+%define git	20141006
+# create archive
+# git clone http://llvm.org/git/libclc.git
+# export PKG=libclc-$(date +%Y%m%d)
+# git archive --prefix $PKG/ --format tar HEAD | xz > $PKG.tar.xz
 
 Summary:	Implementation of the library of the OpenCL C programming language
 Name:		libclc
@@ -10,13 +14,14 @@ Source0:	%{name}-%{git}.tar.xz
 Release:	7
 Source0:	%{name}-%{version}.tar.xz
 %endif
+Source1:	%{name}.rpmlintrc
 Group:		Development/Other
 License:	MIT
 Url:		http://libclc.llvm.org/
 BuildArch:	noarch
 BuildRequires:	clang >= 3.3
 BuildRequires:	llvm >= 3.3
-BuildRequires:	python
+BuildRequires:	python2
 BuildRequires:	llvm-devel >= 3.3
 
 %description
@@ -45,10 +50,14 @@ functions.
 %prep
 %setup -qn %{name}-%{git}
 %apply_patches
-python configure.py \
+
+python2 configure.py \
 	--prefix=%{_prefix} \
 	--pkgconfigdir=%{_datadir}/pkgconfig
+
 sed -i -e "s,/generic,`pwd`/generic,g" Makefile
+# fstack-protector-strong is currently not supported by clang++
+sed -i "s/fstack-protector-strong/fstack-protector/" Makefile
 
 %build
 %make
@@ -60,4 +69,3 @@ sed -i -e "s,/generic,`pwd`/generic,g" Makefile
 %{_includedir}/clc
 %{_prefix}/lib/clc
 %{_datadir}/pkgconfig/*
-
