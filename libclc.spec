@@ -11,7 +11,7 @@ Version:	0.0.1
 Release:	0.%{git}.1
 Source0:	%{name}-%{git}.tar.xz
 %else
-Release:	8
+Release:	9
 Source0:	%{name}-%{version}.tar.xz
 %endif
 Source1:	%{name}.rpmlintrc
