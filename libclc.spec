@@ -1,4 +1,4 @@
-%define git	20170206
+%define git	20181101
 # create archive
 # git clone http://llvm.org/git/libclc.git
 # export PKG=libclc-$(date +%Y%m%d)
