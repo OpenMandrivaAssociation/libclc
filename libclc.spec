@@ -1,4 +1,4 @@
-%define git	20181101
+%define git 20190427
 # create archive
 # git clone http://llvm.org/git/libclc.git
 # export PKG=libclc-$(date +%Y%m%d)
@@ -11,7 +11,7 @@ Version:	0.0.1
 Release:	0.%{git}.1
 Source0:	%{name}-%{git}.tar.xz
 %else
-Release:	2
+Release:	1
 Source0:	%{name}-%{version}.tar.xz
 %endif
 Source1:	%{name}.rpmlintrc
@@ -48,8 +48,7 @@ to override the generic implementation at the granularity of individual
 functions.
 
 %prep
-%setup -qn %{name}-%{git}
-%apply_patches
+%autosetup -n %{name}-%{git} -p1
 
 python2 configure.py \
 	--prefix=%{_prefix} \
@@ -60,10 +59,10 @@ sed -i -e "s,/generic,`pwd`/generic,g" Makefile
 sed -i "s/fstack-protector-strong/fstack-protector/" Makefile
 
 %build
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 %files
 %{_includedir}/clc
